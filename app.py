@@ -131,7 +131,13 @@ def query_deck(deck, duration):
 def is_valid_duel(combo):
     all_cards = []
     for deck in combo:
-        all_cards.extend(deck.get("cards", []))
+        for card in deck.get("cards", []):
+            # Treat evolved cards as their base version
+            if card.endswith("-ev1"):
+                base_card = card[:-4]
+            else:
+                base_card = card
+            all_cards.append(base_card)
     return len(all_cards) == len(set(all_cards))
 
 def build_duel_decks(potential_decks, banned_cards=[], limit=100):
