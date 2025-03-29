@@ -54,6 +54,7 @@
 {bandit, common, 5}
 {barbarians, common, 5}
 {minion-horde, common, 5}
+{rascals, common, 5}
 {elite-barbarians, common, 6}
 {royal-giant, common, 6}
 {royal-recruits, common, 7}

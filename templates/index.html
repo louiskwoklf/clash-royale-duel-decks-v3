@@ -68,23 +68,37 @@
     <button type="submit" class="search-button">SEARCH</button>
   </form>
 
-  {% if deck_output %}
-  <div class="deck-results">
-    <h2>Submitted Decks</h2>
-    <p><strong>Selected Duration:</strong> {{ selected_duration }}</p>
-    <p>Deck 1: {{ deck_output.deck1|join(", ") }}</p>
-    <p>Deck 2: {{ deck_output.deck2|join(", ") }}</p>
-    <p>Deck 3: {{ deck_output.deck3|join(", ") }}</p>
-    <p>Deck 4: {{ deck_output.deck4|join(", ") }}</p>
-  </div>
+  {% if duel_decks %}
+    <div class="duel-decks-container">
+      <h2>Valid Duel Decks ({{ total_duel_decks }})</h2>
+      {% for duel in duel_decks %}
+        <div class="duel-deck">
+          {% for deck in duel %}
+            <div class="deck read-only">
+              <div class="deck-header">{{ deck.deck_name }}</div>
+              <div class="deck-grid">
+                {% for card in deck.cards %}
+                  <div class="deck-slot">
+                    <img src="{{ url_for('static', filename='images/' + card + '.png') }}" alt="{{ card }}">
+                  </div>
+                {% endfor %}
+                {% for i in range(8 - deck.cards|length) %}
+                  <div class="deck-slot"></div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
   {% endif %}
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       let selectedDeck = null;
-      const decks = document.querySelectorAll('.deck');
+      const decks = document.querySelectorAll('.deck:not(.read-only)');
       decks.forEach(deck => {
-        deck.addEventListener('click', function(e) {
+        deck.addEventListener('click', function() {
           if (deck.classList.contains('selected-deck')) {
             deck.classList.remove('selected-deck');
             if (selectedDeck === deck) selectedDeck = null;
@@ -101,7 +115,7 @@
         button.addEventListener('click', function() {
           const cardName = button.getAttribute("data-card");
           if (button.classList.contains("used")) {
-            const deckImg = document.querySelector(`.deck-slot img[alt="${cardName}"]`);
+            const deckImg = document.querySelector(`.deck:not(.read-only) .deck-slot img[alt="${cardName}"]`);
             if (deckImg) deckImg.parentElement.innerHTML = "";
             button.classList.remove("used");
             return;
@@ -132,7 +146,7 @@
         });
       });
 
-      const deckSlots = document.querySelectorAll('.deck-slot');
+      const deckSlots = document.querySelectorAll('.deck:not(.read-only) .deck-slot');
       deckSlots.forEach(slot => {
         slot.addEventListener('click', function(e) {
           const img = slot.querySelector('img');
@@ -160,9 +174,8 @@
         });
       });
 
-      const clearAllBtn = document.querySelector('.clear-all-decks');
-      clearAllBtn.addEventListener('click', function() {
-        document.querySelectorAll('.deck').forEach(deckEl => {
+      document.querySelector('.clear-all-decks').addEventListener('click', function() {
+        document.querySelectorAll('.deck:not(.read-only)').forEach(deckEl => {
           deckEl.querySelectorAll('img').forEach(img => {
             const cardName = img.getAttribute('alt');
             const cardButton = document.querySelector(`.card-button[data-card="${cardName}"]`);
@@ -172,8 +185,7 @@
         });
       });
 
-      const searchButton = document.querySelector('.search-button');
-      searchButton.addEventListener('click', function() {
+      document.querySelector('.search-button').addEventListener('click', function() {
         for (let i = 0; i < 4; i++) {
           const deckEl = document.querySelector(`.deck[data-deck-index="${i}"]`);
           const images = deckEl.querySelectorAll('img');
