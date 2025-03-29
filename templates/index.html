@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Clash Royale Duel Deck Builder</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <header class="page-header">
+    <h1>Clash Royale Duel Deck Builder</h1>
+  </header>
+
+  <form class="form-container" method="POST">
+    <div class="duration-options">
+      <input type="radio" id="option1d" name="duration" value="1d" {% if selected_duration == '1d' %}checked{% endif %}>
+      <label for="option1d">1d</label>
+      <input type="radio" id="option3d" name="duration" value="3d" {% if selected_duration == '3d' %}checked{% endif %}>
+      <label for="option3d">3d</label>
+      <input type="radio" id="option7d" name="duration" value="7d" {% if selected_duration == '7d' %}checked{% endif %}>
+      <label for="option7d">7d</label>
+      <input type="radio" id="option14d" name="duration" value="14d" {% if selected_duration == '14d' %}checked{% endif %}>
+      <label for="option14d">14d</label>
+    </div>
+    
+    <div class="card-library">
+      {% for card in cards %}
+      <button type="button" class="card-button" data-card="{{ card.name }}">
+        <img src="{{ url_for('static', filename='images/' + card.name + '.png') }}" alt="{{ card.name }}">
+      </button>
+      {% endfor %}
+    </div>
+    
+    <div class="decks-container">
+      {% for i in range(4) %}
+      <div class="deck-and-clear">
+        <p class="deck-label">Deck {{ i+1 }}</p>
+        <div class="deck" data-deck-index="{{ i }}">
+          {% if deck_output %}
+            {% set deck = deck_output['deck' + (i+1)|string] %}
+            {% for j in range(8) %}
+              <div class="deck-slot">
+                {% if j < deck|length and deck[j] %}
+                  <img src="{{ url_for('static', filename='images/' + deck[j] + '.png') }}" alt="{{ deck[j] }}">
+                {% endif %}
+              </div>
+            {% endfor %}
+          {% else %}
+            {% for j in range(8) %}
+              <div class="deck-slot"></div>
+            {% endfor %}
+          {% endif %}
+        </div>
+        <button type="button" class="clear-deck" data-deck-index="{{ i }}">Clear Deck {{ i+1 }}</button>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="global-clear">
+      <button type="button" class="clear-all-decks">Clear All Decks</button>
+    </div>
+    
+    <input type="hidden" name="deck0" id="deck0">
+    <input type="hidden" name="deck1" id="deck1">
+    <input type="hidden" name="deck2" id="deck2">
+    <input type="hidden" name="deck3" id="deck3">
+    
+    <button type="submit" class="search-button">SEARCH</button>
+  </form>
+
+  {% if deck_output %}
+  <div class="deck-results">
+    <h2>Submitted Decks</h2>
+    <p><strong>Selected Duration:</strong> {{ selected_duration }}</p>
+    <p>Deck 1: {{ deck_output.deck1|join(", ") }}</p>
+    <p>Deck 2: {{ deck_output.deck2|join(", ") }}</p>
+    <p>Deck 3: {{ deck_output.deck3|join(", ") }}</p>
+    <p>Deck 4: {{ deck_output.deck4|join(", ") }}</p>
+  </div>
+  {% endif %}
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let selectedDeck = null;
+      const decks = document.querySelectorAll('.deck');
+      decks.forEach(deck => {
+        deck.addEventListener('click', function(e) {
+          if (deck.classList.contains('selected-deck')) {
+            deck.classList.remove('selected-deck');
+            if (selectedDeck === deck) selectedDeck = null;
+          } else {
+            decks.forEach(d => d.classList.remove('selected-deck'));
+            deck.classList.add('selected-deck');
+            selectedDeck = deck;
+          }
+        });
+      });
+
+      const cardButtons = document.querySelectorAll('.card-button');
+      cardButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const cardName = button.getAttribute("data-card");
+          if (button.classList.contains("used")) {
+            const deckImg = document.querySelector(`.deck-slot img[alt="${cardName}"]`);
+            if (deckImg) deckImg.parentElement.innerHTML = "";
+            button.classList.remove("used");
+            return;
+          }
+          if (!selectedDeck) {
+            alert('Please select a deck first.');
+            return;
+          }
+          const slots = selectedDeck.querySelectorAll('.deck-slot');
+          let emptySlot = null;
+          for (let slot of slots) {
+            if (!slot.querySelector('img')) {
+              emptySlot = slot;
+              break;
+            }
+          }
+          if (!emptySlot) {
+            alert('The selected deck is already full.');
+            return;
+          }
+          const img = button.querySelector('img');
+          if (img) {
+            const cardImg = img.cloneNode(true);
+            emptySlot.innerHTML = '';
+            emptySlot.appendChild(cardImg);
+            button.classList.add('used');
+          }
+        });
+      });
+
+      const deckSlots = document.querySelectorAll('.deck-slot');
+      deckSlots.forEach(slot => {
+        slot.addEventListener('click', function(e) {
+          const img = slot.querySelector('img');
+          if (img) {
+            e.stopPropagation();
+            const cardName = img.getAttribute('alt');
+            slot.innerHTML = '';
+            const cardButton = document.querySelector(`.card-button[data-card="${cardName}"]`);
+            if (cardButton) cardButton.classList.remove('used');
+          }
+        });
+      });
+
+      const clearDeckButtons = document.querySelectorAll('.clear-deck');
+      clearDeckButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const deckIndex = btn.getAttribute('data-deck-index');
+          const deckEl = document.querySelector(`.deck[data-deck-index="${deckIndex}"]`);
+          deckEl.querySelectorAll('img').forEach(img => {
+            const cardName = img.getAttribute('alt');
+            const cardButton = document.querySelector(`.card-button[data-card="${cardName}"]`);
+            if (cardButton) cardButton.classList.remove('used');
+          });
+          deckEl.querySelectorAll('.deck-slot').forEach(slot => slot.innerHTML = '');
+        });
+      });
+
+      const clearAllBtn = document.querySelector('.clear-all-decks');
+      clearAllBtn.addEventListener('click', function() {
+        document.querySelectorAll('.deck').forEach(deckEl => {
+          deckEl.querySelectorAll('img').forEach(img => {
+            const cardName = img.getAttribute('alt');
+            const cardButton = document.querySelector(`.card-button[data-card="${cardName}"]`);
+            if (cardButton) cardButton.classList.remove('used');
+          });
+          deckEl.querySelectorAll('.deck-slot').forEach(slot => slot.innerHTML = '');
+        });
+      });
+
+      const searchButton = document.querySelector('.search-button');
+      searchButton.addEventListener('click', function() {
+        for (let i = 0; i < 4; i++) {
+          const deckEl = document.querySelector(`.deck[data-deck-index="${i}"]`);
+          const images = deckEl.querySelectorAll('img');
+          let cardNames = [];
+          images.forEach(img => cardNames.push(img.alt));
+          document.getElementById(`deck${i}`).value = cardNames.join(',');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
