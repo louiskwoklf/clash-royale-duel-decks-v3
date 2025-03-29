@@ -134,7 +134,7 @@ def is_valid_duel(combo):
         all_cards.extend(deck.get("cards", []))
     return len(all_cards) == len(set(all_cards))
 
-def build_duel_decks(potential_decks, limit=100):
+def build_duel_decks(potential_decks, banned_cards=[], limit=100):
     duel_decks = []
     seen = set()
     total_unique = 0
@@ -145,6 +145,13 @@ def build_duel_decks(potential_decks, limit=100):
         potential_decks.get('deck4', [])
     ):
         if is_valid_duel(combo):
+            # Gather all cards from the 4 decks
+            all_cards = []
+            for deck in combo:
+                all_cards.extend(deck.get('cards', []))
+            # If any banned card is in the combo, skip it
+            if any(banned in all_cards for banned in banned_cards):
+                continue
             rep = tuple(sorted(tuple(sorted(deck['cards'])) for deck in combo))
             if rep not in seen:
                 seen.add(rep)
@@ -161,6 +168,7 @@ def index():
     selected_duration = "1d"
     deck_output = deck_results = None
     duel_decks, total_duel_decks = None, 0
+    banned_cards = []
 
     if request.method == "POST":
         selected_duration = request.form.get("duration", "1d")
@@ -170,6 +178,7 @@ def index():
             "deck3": [c.strip() for c in request.form.get("deck2", "").split(",") if c.strip()],
             "deck4": [c.strip() for c in request.form.get("deck3", "").split(",") if c.strip()]
         }
+        banned_cards = [c.strip() for c in request.form.get("banned_cards", "").split(",") if c.strip()]
         deck_results = {}
         deck_debug_info = {}
         for key, deck in deck_output.items():
@@ -179,10 +188,11 @@ def index():
             extracted = extract_decks(html_content) if html_content else []
             deck_debug_info[key] = {"url": url, "extracted": extracted}
         potential_decks = {key: deck_debug_info[key]['extracted'] for key in deck_debug_info}
-        duel_decks, total_duel_decks = build_duel_decks(potential_decks)
+        duel_decks, total_duel_decks = build_duel_decks(potential_decks, banned_cards)
     return render_template("index.html", cards=cards, deck_output=deck_output,
                            deck_results=deck_results, duel_decks=duel_decks,
-                           total_duel_decks=total_duel_decks, selected_duration=selected_duration)
+                           total_duel_decks=total_duel_decks, selected_duration=selected_duration,
+                           banned_cards=banned_cards)
 
 if __name__ == "__main__":
     app.run(debug=True)

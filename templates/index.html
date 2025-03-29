@@ -24,10 +24,14 @@
     </div>
     
     <div class="card-library">
+      {% set used_cards = [] %}
+      {% if deck_output %}
+        {% set used_cards = deck_output['deck1']|default([]) + deck_output['deck2']|default([]) + deck_output['deck3']|default([]) + deck_output['deck4']|default([]) %}
+      {% endif %}
       {% for card in cards %}
-      <button type="button" class="card-button" data-card="{{ card.name }}">
-        <img src="{{ url_for('static', filename='images/' + card.name + '.png') }}" alt="{{ card.name }}">
-      </button>
+        <button type="button" class="card-button{% if banned_cards and card.name in banned_cards %} banned{% endif %}{% if card.name in used_cards %} used{% endif %}" data-card="{{ card.name }}">
+          <img src="{{ url_for('static', filename='images/' + card.name + '.png') }}" alt="{{ card.name }}">
+        </button>
       {% endfor %}
     </div>
     
@@ -62,7 +66,13 @@
     
     <div class="banned-cards-section">
       <p class="banned-cards-title">Banned Cards</p>
-      <div class="banned-cards-container" id="banned-cards-container"></div>
+      <div class="banned-cards-container" id="banned-cards-container">
+        {% if banned_cards %}
+          {% for banned in banned_cards %}
+            <img src="{{ url_for('static', filename='images/' + banned + '.png') }}" alt="{{ banned }}">
+          {% endfor %}
+        {% endif %}
+      </div>
       <button type="button" class="clear-banned-cards clear-all-decks">Clear Banned Cards</button>
     </div>
     <input type="hidden" name="banned_cards" id="banned_cards">
