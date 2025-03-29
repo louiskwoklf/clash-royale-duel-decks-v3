@@ -134,7 +134,7 @@ def is_valid_duel(combo):
         all_cards.extend(deck.get("cards", []))
     return len(all_cards) == len(set(all_cards))
 
-def build_duel_decks(potential_decks, limit=1000):
+def build_duel_decks(potential_decks, limit=100):
     duel_decks = []
     seen = set()
     total_unique = 0
