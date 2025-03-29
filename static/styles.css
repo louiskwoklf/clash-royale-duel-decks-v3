@@ -75,8 +75,8 @@ body {
 }
 
 .card-button {
-  border: 1px solid #ccc;
-  background: #fff;
+  border: none;
+  background: none;
   border-radius: 4px;
   cursor: pointer;
   overflow: hidden;
@@ -274,4 +274,47 @@ body {
   background: #f3f3f3;
   border: 1px solid #999;
   border-radius: 6px;
+}
+
+/* Banned Cards Section */
+.banned-cards-section {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.banned-cards-title {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.banned-cards-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 72px;
+  background: #f3f3f3;
+  border: 1px solid #999;
+  border-radius: 6px;
+  padding: 5px;
+  gap: 5px;
+  cursor: pointer;
+  transition: border 0.3s;
+  margin-bottom: 20px;
+}
+
+.banned-cards-container.active {
+  border: 2px solid #4c7bd9;
+}
+
+.banned-cards-container img {
+  width: 60px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Banned state for card buttons */
+.card-button.banned {
+  opacity: 0.5;
 }
