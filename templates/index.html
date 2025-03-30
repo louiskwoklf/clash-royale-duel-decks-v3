@@ -93,6 +93,14 @@
           {% for deck in duel %}
             <div class="deck read-only">
               <div class="deck-header">{{ deck.deck_name }}</div>
+              <div class="deck-stats" style="display: flex; gap: 10px;">
+                {% if deck.usage %}
+                  <span class="deck-usage">Usage: {{ deck.usage }}</span>
+                {% endif %}
+                {% if deck.wins %}
+                  <span class="deck-wins">Wins: {{ deck.wins }}</span>
+                {% endif %}
+              </div>
               <div class="deck-grid">
                 {% for card in deck.cards %}
                   <div class="deck-slot">

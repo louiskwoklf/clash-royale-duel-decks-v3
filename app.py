@@ -95,10 +95,22 @@ def extract_decks(html_content):
                 card_alt = img_tag.get('alt')
                 if card_alt:
                     card_names.append(card_alt.lower().replace(' ', '-'))
+        
+        wins_cell = deck_segment.select_one("table.stats tbody tr:first-child td:nth-of-type(3)")
+        wins = wins_cell.get_text(strip=True) if wins_cell else None
+
+        usage_cell = deck_segment.select_one("table.stats tbody tr:first-child td:nth-of-type(2)")
+        usage = usage_cell.get_text(strip=True) if usage_cell else None
+
         rep = tuple(sorted(card_names))
         if rep not in unique_deck_cards:
             unique_deck_cards.add(rep)
-            decks.append({'deck_name': deck_name, 'cards': card_names})
+            decks.append({
+                'deck_name': deck_name,
+                'cards': card_names,
+                'wins': wins,
+                'usage': usage
+            })
         else:
             print(f"Duplicate deck skipped: {deck_name}")
     return decks
@@ -132,7 +144,6 @@ def is_valid_duel(combo):
     all_cards = []
     for deck in combo:
         for card in deck.get("cards", []):
-            # Treat evolved cards as their base version
             if card.endswith("-ev1"):
                 base_card = card[:-4]
             else:
@@ -151,19 +162,48 @@ def build_duel_decks(potential_decks, banned_cards=[], limit=100):
         potential_decks.get('deck4', [])
     ):
         if is_valid_duel(combo):
-            # Gather all cards from the 4 decks
             all_cards = []
             for deck in combo:
                 all_cards.extend(deck.get('cards', []))
-            # If any banned card is in the combo, skip it
             if any(banned in all_cards for banned in banned_cards):
                 continue
             rep = tuple(sorted(tuple(sorted(deck['cards'])) for deck in combo))
             if rep not in seen:
                 seen.add(rep)
                 total_unique += 1
-                if len(duel_decks) < limit:
-                    duel_decks.append(combo)
+                duel_decks.append(combo)
+    
+    def average_score(combo):
+        total = 0
+        count = 0
+        for deck in combo:
+            usage_str = deck.get('usage')
+            if usage_str:
+                cleaned_usage = usage_str.replace(',', '').replace('%', '')
+                try:
+                    usage_val = float(cleaned_usage)
+                except ValueError:
+                    usage_val = 0
+            else:
+                usage_val = 0
+
+            wins_str = deck.get('wins')
+            if wins_str:
+                cleaned_wins = wins_str.replace(',', '').replace('%', '')
+                try:
+                    wins_val = float(cleaned_wins)
+                except ValueError:
+                    wins_val = 0
+            else:
+                wins_val = 0
+
+            total += usage_val * wins_val
+            count += 1
+        return total / count if count else 0
+    
+    duel_decks.sort(key=average_score, reverse=True)
+    duel_decks = duel_decks[:limit]
+    
     return duel_decks, total_unique
 
 @app.route("/", methods=["GET", "POST"])
