@@ -120,7 +120,7 @@ def query_deck(deck, duration):
     params = {
         "time": duration,
         "sort": "rating",
-        "size": "30",
+        "size": "20",
         "players": "PvP",
         "min_ranked_trophies": "0",
         "max_ranked_trophies": "4000",
