@@ -24,6 +24,7 @@
 {goblin-drill-ev1, epic, 4}
 {hunter-ev1, epic, 4}
 {electro-dragon-ev1, epic, 5}
+{executioner-ev1, epic, 5}
 {goblin-giant-ev1, epic, 6}
 {pekka-ev1, epic, 7}
 {lumberjack-ev1, legendary, 4}
@@ -147,3 +148,4 @@
 {archer-queen, champion, 5}
 {goblinstein, champion, 5}
 {monk, champion, 5}
+{boss-bandit, champion, 6}
