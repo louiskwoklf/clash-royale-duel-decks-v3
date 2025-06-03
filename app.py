@@ -151,7 +151,9 @@ def is_valid_duel(combo):
             all_cards.append(base_card)
     return len(all_cards) == len(set(all_cards))
 
-def build_duel_decks(potential_decks, banned_cards=[], limit=100):
+def build_duel_decks(potential_decks, banned_cards=None, limit=100):
+    if banned_cards is None:
+        banned_cards = []
     duel_decks = []
     seen = set()
     total_unique = 0
