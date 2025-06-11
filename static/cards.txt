@@ -27,6 +27,7 @@
 {executioner-ev1, epic, 5}
 {goblin-giant-ev1, epic, 6}
 {pekka-ev1, epic, 7}
+{inferno-dragon-ev1, legendary, 4}
 {lumberjack-ev1, legendary, 4}
 {mega-knight-ev1, legendary, 7}
 {electro-spirit, common, 1}
