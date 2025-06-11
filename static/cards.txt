@@ -25,6 +25,7 @@
 {hunter-ev1, epic, 4}
 {electro-dragon-ev1, epic, 5}
 {executioner-ev1, epic, 5}
+{witch-ev1, epic, 5}
 {goblin-giant-ev1, epic, 6}
 {pekka-ev1, epic, 7}
 {inferno-dragon-ev1, legendary, 4}
