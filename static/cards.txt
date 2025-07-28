@@ -8,6 +8,7 @@
 {cannon-ev1, common, 3}
 {firecracker-ev1, common, 3}
 {knight-ev1, common, 3}
+{skeleton-barrel-ev1, common, 3}
 {mortar-ev1, common, 4}
 {tesla-ev1, common, 4}
 {barbarians-ev1, common, 5}
@@ -141,6 +142,7 @@
 {graveyard, legendary, 5}
 {ram-rider, legendary, 5}
 {sparky, legendary, 6}
+{spirit-empress, legendary, 6}
 {lava-hound, legendary, 7}
 {mega-knight, legendary, 7}
 {little-prince, champion, 3}
