@@ -30,7 +30,7 @@
       {% endif %}
       {% for card in cards %}
         <button type="button" class="card-button{% if banned_cards and card.name in banned_cards %} banned{% endif %}{% if card.name in used_cards %} used{% endif %}" data-card="{{ card.name }}">
-          <img src="{{ url_for('static', filename='images/' + card.name + '.png') }}" alt="{{ card.name }}">
+          <img src="{{ url_for('static', filename='images/cards/' + card.name + '.png') }}" alt="{{ card.name }}">
         </button>
       {% endfor %}
     </div>
@@ -45,7 +45,7 @@
             {% for j in range(8) %}
               <div class="deck-slot">
                 {% if j < deck|length and deck[j] %}
-                  <img src="{{ url_for('static', filename='images/' + deck[j] + '.png') }}" alt="{{ deck[j] }}">
+                  <img src="{{ url_for('static', filename='images/cards/' + deck[j] + '.png') }}" alt="{{ deck[j] }}">
                 {% endif %}
               </div>
             {% endfor %}
@@ -69,7 +69,7 @@
       <div class="banned-cards-container" id="banned-cards-container">
         {% if banned_cards %}
           {% for banned in banned_cards %}
-            <img src="{{ url_for('static', filename='images/' + banned + '.png') }}" alt="{{ banned }}">
+            <img src="{{ url_for('static', filename='images/cards/' + banned + '.png') }}" alt="{{ banned }}">
           {% endfor %}
         {% endif %}
       </div>
@@ -104,7 +104,7 @@
               <div class="deck-grid">
                 {% for card in deck.cards %}
                   <div class="deck-slot">
-                    <img src="{{ url_for('static', filename='images/' + card + '.png') }}" alt="{{ card }}">
+                    <img src="{{ url_for('static', filename='images/cards/' + card + '.png') }}" alt="{{ card }}">
                   </div>
                 {% endfor %}
                 {% for i in range(8 - deck.cards|length) %}

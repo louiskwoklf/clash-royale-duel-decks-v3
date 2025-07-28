@@ -8,7 +8,8 @@
 /* Basic Styles */
 body {
   font-family: "Arial", sans-serif;
-  background: #bcd6f7;
+  background: #bcd6f7 url("../images/background/blue-rhombus.png") repeat;
+  background-size: 220px;
   padding: 20px;
 }
 
@@ -19,7 +20,7 @@ body {
 
 .page-header h1 {
   font-size: 1.8rem;
-  color: #333;
+  color: white;
 }
 
 /* Form Container */

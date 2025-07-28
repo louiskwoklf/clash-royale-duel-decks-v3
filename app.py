@@ -43,7 +43,7 @@ def load_cards():
     return cards
 
 def ensure_image(card_name):
-    filename = os.path.join(IMAGES_FOLDER, f"{card_name}.png")
+    filename = os.path.join(IMAGES_FOLDER, f"cards/{card_name}.png")
     if not os.path.exists(filename):
         url = (
             "https://cdns3.royaleapi.com/cdn-cgi/image/"
