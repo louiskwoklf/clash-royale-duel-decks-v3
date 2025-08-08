@@ -5,25 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Clash Royale Duel Deck Builder</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee:wght@400&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class="page-header">
-    <h1>Clash Royale Duel Deck Builder</h1>
+    <h1 class="app-title">Clash Royale Duel Deck Builder</h1>
   </header>
 
   <form class="form-container" method="POST">
-    <div class="duration-options">
-      <input type="radio" id="option1d" name="duration" value="1d" {% if selected_duration == '1d' %}checked{% endif %}>
-      <label for="option1d">1d</label>
-      <input type="radio" id="option3d" name="duration" value="3d" {% if selected_duration == '3d' %}checked{% endif %}>
-      <label for="option3d">3d</label>
-      <input type="radio" id="option7d" name="duration" value="7d" {% if selected_duration == '7d' %}checked{% endif %}>
-      <label for="option7d">7d</label>
-      <input type="radio" id="option14d" name="duration" value="14d" {% if selected_duration == '14d' %}checked{% endif %}>
-      <label for="option14d">14d</label>
+    <div class="duration-options time-filters">
+      <input type="radio" id="option1d" name="duration" value="1d" class="btn btn-toggle" {% if selected_duration == '1d' %}checked{% endif %}>
+      <label for="option1d" class="btn btn-toggle">1d</label>
+      <input type="radio" id="option3d" name="duration" value="3d" class="btn btn-toggle" {% if selected_duration == '3d' %}checked{% endif %}>
+      <label for="option3d" class="btn btn-toggle">3d</label>
+      <input type="radio" id="option7d" name="duration" value="7d" class="btn btn-toggle" {% if selected_duration == '7d' %}checked{% endif %}>
+      <label for="option7d" class="btn btn-toggle">7d</label>
+      <input type="radio" id="option14d" name="duration" value="14d" class="btn btn-toggle" {% if selected_duration == '14d' %}checked{% endif %}>
+      <label for="option14d" class="btn btn-toggle">14d</label>
     </div>
     
-    <div class="card-library">
+    <div class="card-library card-bank">
       {% set used_cards = [] %}
       {% if deck_output %}
         {% set used_cards = deck_output['deck1']|default([]) + deck_output['deck2']|default([]) + deck_output['deck3']|default([]) + deck_output['deck4']|default([]) %}
@@ -37,13 +40,13 @@
     
     <div class="decks-container">
       {% for i in range(4) %}
-      <div class="deck-and-clear">
-        <p class="deck-label">Deck {{ i+1 }}</p>
+      <div class="deck-and-clear deck-group">
+        <p class="deck-label deck-title">Deck {{ i+1 }}</p>
         <div class="deck" data-deck-index="{{ i }}">
           {% if deck_output %}
             {% set deck = deck_output['deck' + (i+1)|string] %}
             {% for j in range(8) %}
-              <div class="deck-slot">
+              <div class="deck-slot deck-slot">
                 {% if j < deck|length and deck[j] %}
                   <img src="{{ url_for('static', filename='images/cards/' + deck[j] + '.png') }}" alt="{{ deck[j] }}">
                 {% endif %}
@@ -51,17 +54,17 @@
             {% endfor %}
           {% else %}
             {% for j in range(8) %}
-              <div class="deck-slot"></div>
+              <div class="deck-slot deck-slot"></div>
             {% endfor %}
           {% endif %}
         </div>
-        <button type="button" class="clear-deck" data-deck-index="{{ i }}">Clear Deck {{ i+1 }}</button>
+        <button type="button" class="clear-deck btn btn-danger" data-deck-index="{{ i }}">Clear Deck {{ i+1 }}</button>
       </div>
       {% endfor %}
     </div>
 
     <div class="global-clear">
-      <button type="button" class="clear-all-decks">Clear All Decks</button>
+      <button type="button" class="clear-all-decks btn btn-danger">Clear All Decks</button>
     </div>
     
     <div class="banned-cards-section">
@@ -73,7 +76,7 @@
           {% endfor %}
         {% endif %}
       </div>
-      <button type="button" class="clear-banned-cards clear-all-decks">Clear Banned Cards</button>
+      <button type="button" class="clear-banned-cards clear-all-decks btn btn-danger">Clear Banned Cards</button>
     </div>
     <input type="hidden" name="banned_cards" id="banned_cards">
 
@@ -82,7 +85,7 @@
     <input type="hidden" name="deck2" id="deck2">
     <input type="hidden" name="deck3" id="deck3">
     
-    <button type="submit" class="search-button">SEARCH</button>
+    <button type="submit" class="search-button btn btn-primary">SEARCH</button>
   </form>
 
   {% if duel_decks %}
