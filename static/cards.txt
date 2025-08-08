@@ -16,6 +16,7 @@
 {royal-recruits-ev1, common, 7}
 {dart-goblin-ev1, rare, 3}
 {battle-ram-ev1, rare, 4}
+{furnace-ev1, rare, 4}
 {goblin-cage-ev1, rare, 4}
 {musketeer-ev1, rare, 4}
 {valkyrie-ev1, rare, 4}

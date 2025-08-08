@@ -47,7 +47,7 @@ def ensure_image(card_name):
     if not os.path.exists(filename):
         url = (
             "https://cdns3.royaleapi.com/cdn-cgi/image/"
-            f"w=75,h=90,format=auto,q=80/static/img/cards/v4-aba2f5ae/{card_name}.png"
+            f"w=75,h=90,format=auto,q=80/static/img/cards/v6-aa179c9e/{card_name}.png"
         )
         headers = {"User-Agent": "Mozilla/5.0"}
         try:
