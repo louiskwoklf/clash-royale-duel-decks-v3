@@ -59,7 +59,6 @@
 {mortar, common, 4}
 {skeleton-dragons, common, 4}
 {tesla, common, 4}
-{bandit, common, 5}
 {barbarians, common, 5}
 {minion-horde, common, 5}
 {rascals, common, 5}
