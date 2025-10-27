@@ -82,13 +82,13 @@
 {furnace, rare, 4}
 {goblin-cage, rare, 4}
 {goblin-demolisher, rare, 4}
+{goblin-hut, rare, 4}
 {hog-rider, rare, 4}
 {mini-pekka, rare, 4}
 {musketeer, rare, 4}
 {valkyrie, rare, 4}
 {zappies, rare, 4}
 {giant, rare, 5}
-{goblin-hut, rare, 5}
 {inferno-tower, rare, 5}
 {royal-hogs, rare, 5}
 {wizard, rare, 5}
