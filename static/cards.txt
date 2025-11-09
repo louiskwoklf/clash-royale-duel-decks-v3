@@ -20,6 +20,7 @@
 {goblin-cage-ev1, rare, 4}
 {musketeer-ev1, rare, 4}
 {valkyrie-ev1, rare, 4}
+{royal-hogs-ev1, rare, 5}
 {wizard-ev1, rare, 5}
 {wall-breakers-ev1, epic, 2}
 {goblin-barrel-ev1, epic, 3}
