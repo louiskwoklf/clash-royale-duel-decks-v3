@@ -51,17 +51,20 @@ def format_entry(entry):
 def sort_key(entry):
     """
     Returns a tuple that defines the sort order:
-      1. Whether the card name has the '-ev1' suffix.
-         (Cards without '-ev1' come after cards with it.)
+      1. Card name suffix priority: cards ending in '-hero' first, then '-ev1', then others.
       2. Rarity order as defined in rarity_order.
       3. Cost (numerical order).
       4. Card name (alphabetical order) as a default case.
     """
     card_name, rarity, cost = entry
-    # Cards ending with "-ev1" get a flag of 0, others 1.
-    ev1_flag = 0 if card_name.endswith("-ev1") else 1
+    if card_name.endswith("-hero"):
+        suffix_flag = 0
+    elif card_name.endswith("-ev1"):
+        suffix_flag = 1
+    else:
+        suffix_flag = 2
     rarity_value = rarity_order.get(rarity.lower(), 100)  # Unknown rarities sort last.
-    return (ev1_flag, rarity_value, cost, card_name.lower())
+    return (suffix_flag, rarity_value, cost, card_name.lower())
 
 def main():
     filename = "static/cards.txt"
