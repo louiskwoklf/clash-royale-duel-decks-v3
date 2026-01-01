@@ -1,3 +1,7 @@
+{knight-hero, common, 3}
+{mini-pekka-hero, rare, 4}
+{musketeer-hero, rare, 4}
+{giant-hero, rare, 5}
 {ice-spirit-ev1, common, 1}
 {skeletons-ev1, common, 1}
 {bats-ev1, common, 2}
@@ -54,7 +58,6 @@
 {firecracker, common, 3}
 {goblin-gang, common, 3}
 {knight, common, 3}
-{knight-hero, common, 3}
 {minions, common, 3}
 {royal-delivery, common, 3}
 {skeleton-barrel, common, 3}
@@ -86,13 +89,10 @@
 {goblin-hut, rare, 4}
 {hog-rider, rare, 4}
 {mini-pekka, rare, 4}
-{mini-pekka-hero, rare, 4}
 {musketeer, rare, 4}
-{musketeer-hero, rare, 4}
 {valkyrie, rare, 4}
 {zappies, rare, 4}
 {giant, rare, 5}
-{giant-hero, rare, 5}
 {inferno-tower, rare, 5}
 {royal-hogs, rare, 5}
 {wizard, rare, 5}
