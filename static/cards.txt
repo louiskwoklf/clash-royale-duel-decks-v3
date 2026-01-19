@@ -1,7 +1,9 @@
 {knight-hero, common, 3}
+{ice-golem-hero, rare, 2}
 {mini-pekka-hero, rare, 4}
 {musketeer-hero, rare, 4}
 {giant-hero, rare, 5}
+{wizard-hero, rare, 5}
 {ice-spirit-ev1, common, 1}
 {skeletons-ev1, common, 1}
 {bats-ev1, common, 2}
