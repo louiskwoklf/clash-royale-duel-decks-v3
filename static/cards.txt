@@ -1,5 +1,7 @@
+{goblins-hero, common, 2}
 {knight-hero, common, 3}
 {ice-golem-hero, rare, 2}
+{mega-minion-hero, rare, 3}
 {mini-pekka-hero, rare, 4}
 {musketeer-hero, rare, 4}
 {giant-hero, rare, 5}
